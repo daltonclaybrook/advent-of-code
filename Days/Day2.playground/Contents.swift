@@ -9,21 +9,21 @@ typealias Instruction = (Int, Int) -> Int
 extension Array where Element == Int {
 	subscript(pointer pointer: Int) -> Int {
 		get { self[self[pointer]] }
-		set {self[self[pointer]] = newValue }
+		set { self[self[pointer]] = newValue }
 	}
 }
 
 let startingIntcodes: [Intcode] = inputString
 	.split(separator: ",")
 	.compactMap { Int($0) }
-let operations: [Int: Instruction] = [1: (+), 2: (*)]
+let instructions: [Int: Instruction] = [1: (+), 2: (*)]
 
 func evaluate(program: inout [Intcode]) -> Output {
 	var ip = 0 // instruction pointer
 	while true {
 		let opcode = program[ip]
-		if let operation = operations[opcode] {
-			program[pointer: ip+3] = operation(program[pointer: ip+1], program[pointer: ip+2])
+		if let instruction = instructions[opcode] {
+			program[pointer: ip+3] = instruction(program[pointer: ip+1], program[pointer: ip+2])
 			ip += 4
 		} else if opcode == 99 {
 			break
